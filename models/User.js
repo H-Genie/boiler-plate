@@ -4,28 +4,19 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
 const userSchema = mongoose.Schema({
-    name: {
+    id: {
         type: String,
-        maxlength: 50
-    },
-    email: {
-        type: String,
-        trim: true,
+        maxlength: 16,
         unique: 1
     },
     password: {
         type: String,
-        minlength: 5
-    },
-    lastname: {
-        type: String,
-        maxlength: 50
+        minlength: 6
     },
     role: {
         type: Number,
         default: 0
     },
-    image: String,
     token: {
         type: String
     },
@@ -68,6 +59,18 @@ userSchema.methods.generateToken = function (callback) {
     user.save(function (err, user) {
         if (err) callback(err);
         callback(null, user);
+    })
+}
+
+userSchema.statics.findByToken = function (token, callback) {
+    var user = this;
+
+    // 토큰을 decode 함
+    jwt.verify(token, 'secretToken', function (err, decoded) {
+        user.findOne({ "_id": decoded, "token": token }, function (err, user) {
+            if (err) callback(err);
+            callback(null, user);
+        })
     })
 }
 
