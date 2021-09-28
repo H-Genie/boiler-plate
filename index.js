@@ -64,6 +64,16 @@ app.get('/auth', auth, (req, res) => {
     })
 })
 
+app.get('/logout', auth, (req, res) => {
+    User.findOneAndUpdate({ _id: req.user._id },
+        { token: '' }
+        , (err, user) => {
+            if (err) res.json({ success: false, err });
+            res.status(200).send({ success: true })
+        }
+    )
+})
+
 // 포트 실행
 const port = 3001;
 app.listen(port, () => console.log(`Listening on port ${port}`));
