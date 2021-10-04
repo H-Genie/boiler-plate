@@ -1,11 +1,11 @@
 import React from 'react'
 import axios from 'axios'
 
-function Signin() {
-    const signIn = e => {
+function Signup() {
+    const signUp = e => {
         e.preventDefault();
 
-        axios.post('/signin',
+        axios.post('/signup',
             {
                 id: e.target[0].value,
                 password: e.target[1].value
@@ -15,15 +15,15 @@ function Signin() {
     }
 
     return (
-        <>
-            <h2>Sign In</h2>
-            <form onSubmit={e => signIn(e)}>
+        <div className="align_center">
+            <h2>Sign Up</h2>
+            <form onSubmit={e => signUp(e)}>
                 <input type="text" name="id" placeholder="id" />
                 <input type="password" name="password" placeholder="password" />
-                <input type="submit" value="Sign in" />
+                <input type="submit" value="Sign Up" />
             </form>
-        </>
+        </div>
     )
 }
 
-export default Signin
+export default Signup

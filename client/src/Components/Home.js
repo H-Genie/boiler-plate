@@ -2,7 +2,9 @@ import React from 'react'
 
 function Home() {
     return (
-        <p>Hello World!</p>
+        <div className="align_center">
+            <p>Hello World!</p>
+        </div>
     )
 }
 
