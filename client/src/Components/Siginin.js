@@ -10,7 +10,7 @@ function Signin(props) {
 
     const onIdChange = e => setId(e.currentTarget.value);
     const onPasswordChange = e => setPassword(e.currentTarget.value);
-    const onSubmitHandler = e => {
+    const onSubmit = e => {
         e.preventDefault();
 
         let body = { id, password }
@@ -19,7 +19,7 @@ function Signin(props) {
                 if (response.payload.loginSuccess) {
                     props.history.push('/')
                 } else {
-                    alert('Error')
+                    alert(response.payload.message)
                 }
             })
     }
@@ -27,7 +27,7 @@ function Signin(props) {
     return (
         <div className="align_center">
             <h2>Sign In</h2>
-            <form onSubmit={onSubmitHandler}>
+            <form onSubmit={onSubmit}>
                 <input
                     type="text"
                     value={id}

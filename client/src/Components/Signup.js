@@ -1,26 +1,62 @@
-import React from 'react'
-import axios from 'axios'
+import React, { useState } from 'react'
 
-function Signup() {
-    const signUp = e => {
+import { useDispatch } from 'react-redux'
+import { signup } from '../actions/user_action'
+
+function Signup(props) {
+    const dispatch = useDispatch();
+    const [id, setId] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmedPassword, setConfirmedPassword] = useState("");
+
+    const onIdChange = e => setId(e.currentTarget.value);
+    const onPasswordChange = e => setPassword(e.currentTarget.value);
+    const onconfirmedPasswordChange = e => setConfirmedPassword(e.currentTarget.value)
+    const onSubmit = e => {
         e.preventDefault();
+        if (password !== confirmedPassword) {
+            return alert('비밀번호가 일치하지 않습니다')
+        }
 
-        axios.post('/signup',
-            {
-                id: e.target[0].value,
-                password: e.target[1].value
-            }
-        )
-            .then(response => console.log(response))
+        let body = { id, password }
+        dispatch(signup(body))
+            .then(response => {
+                if (response.payload.success) {
+                    props.history.push('/signin')
+                } else {
+                    alert(response.payload.message)
+                }
+            })
     }
 
     return (
         <div className="align_center">
             <h2>Sign Up</h2>
-            <form onSubmit={e => signUp(e)}>
-                <input type="text" name="id" placeholder="id" />
-                <input type="password" name="password" placeholder="password" />
-                <input type="submit" value="Sign Up" />
+            <form onSubmit={onSubmit}>
+                <input
+                    type="text"
+                    value={id}
+                    placeholder="id"
+                    onChange={onIdChange}
+                />
+                <input
+                    type="password"
+                    value={password}
+                    placeholder="password"
+                    autoComplete="off"
+                    onChange={onPasswordChange}
+                />
+                <input
+                    type="password"
+                    value={confirmedPassword}
+                    placeholder="password_confirmed"
+                    autoComplete="off"
+                    onChange={onconfirmedPasswordChange}
+                />
+                <input
+                    type="submit"
+                    value="Sign Up"
+                />
             </form>
         </div>
     )

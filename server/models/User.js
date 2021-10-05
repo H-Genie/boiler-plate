@@ -28,9 +28,9 @@ userSchema.pre('save', function (next) {
     // password 변경될때만 암호화함
     if (user.isModified('password')) {
         bcrypt.genSalt(saltRounds, (err, salt) => {
-            if (err) next(err);
+            if (err) return next(err);
             bcrypt.hash(user.password, salt, (err, hash) => {
-                if (err) next(err);
+                if (err) return next(err);
                 user.password = hash;
                 next();
             });
@@ -42,7 +42,7 @@ userSchema.pre('save', function (next) {
 
 userSchema.methods.comparePassword = function (plainPassword, callback) {
     bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
-        if (err) callback(err);
+        if (err) return callback(err);
         callback(null, isMatch)
     })
 }
@@ -54,7 +54,7 @@ userSchema.methods.generateToken = function (callback) {
     var token = jwt.sign(user._id.toHexString(), 'secretToken');
     user.token = token;
     user.save(function (err, user) {
-        if (err) callback(err);
+        if (err) return callback(err);
         callback(null, user);
     })
 }
@@ -65,7 +65,7 @@ userSchema.statics.findByToken = function (token, callback) {
     // 토큰을 decode 함
     jwt.verify(token, 'secretToken', function (err, decoded) {
         user.findOne({ "_id": decoded, "token": token }, function (err, user) {
-            if (err) callback(err);
+            if (err) return callback(err);
             callback(null, user);
         })
     })
