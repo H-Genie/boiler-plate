@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { SIGNIN, SIGNUP } from './types'
+import { SIGNIN, SIGNUP, AUTH } from './types'
 
 export function signin(dataToSubmit) {
     const request = axios.post('/signin', dataToSubmit)
@@ -17,6 +17,16 @@ export function signup(dataToSubmit) {
 
     return {
         type: SIGNUP,
+        payload: request
+    }
+}
+
+export function auth() {
+    const request = axios.get('/auth')
+        .then(response => response.data)
+
+    return {
+        type: AUTH,
         payload: request
     }
 }

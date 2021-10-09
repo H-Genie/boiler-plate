@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import { useDispatch } from 'react-redux'
 import { signup } from '../actions/user_action'
+import { withRouter } from 'react-router-dom'
 
 function Signup(props) {
     const dispatch = useDispatch();
@@ -62,4 +63,4 @@ function Signup(props) {
     )
 }
 
-export default Signup
+export default withRouter(Signup)

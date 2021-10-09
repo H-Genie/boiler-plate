@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import { useDispatch } from 'react-redux'
 import { signin } from '../actions/user_action'
+import { withRouter } from 'react-router-dom'
 
 function Signin(props) {
     const dispatch = useDispatch();
@@ -18,6 +19,7 @@ function Signin(props) {
             .then(response => {
                 if (response.payload.loginSuccess) {
                     props.history.push('/')
+                    // alert("로그인에 성공하였습니다")
                 } else {
                     alert(response.payload.message)
                 }
@@ -50,4 +52,4 @@ function Signin(props) {
     )
 }
 
-export default Signin
+export default withRouter(Signin)
